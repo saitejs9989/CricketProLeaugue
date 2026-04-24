@@ -21,7 +21,7 @@
           <th title="Draws">D</th>
           <th title="Points">PTS</th>
           <th title="Net Run Rate">NRR</th>
-          <th>Form</th>
+          <th title="Win Rate">WR%</th>
         </tr>
       </thead>
       <tbody>
@@ -34,25 +34,20 @@
             </td>
             <td>
               <div class="d-flex align-items-center gap-2">
-                <span style="font-size:1.2rem;">@t.LogoEmoji</span>
+                <span style="font-size:1.2rem;">@t.Team.LogoEmoji</span>
                 <div>
-                  <div style="font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:1rem;">@t.Name</div>
-                  <div style="font-size:.7rem;color:var(--muted);">@t.Captain</div>
+                  <div style="font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:1rem;">@t.Team.Name</div>
+                  <div style="font-size:.7rem;color:var(--muted);">@t.Team.Captain</div>
                 </div>
               </div>
             </td>
             <td class="text-mt">@t.MatchesPlayed</td>
-            <td class="text-g fw-bold">@t.Wins</td>
-            <td class="text-rd fw-bold">@t.Losses</td>
-            <td class="text-gd">@t.Draws</td>
+            <td class="text-g fw-bold">@t.Team.Wins</td>
+            <td class="text-rd fw-bold">@t.Team.Losses</td>
+            <td class="text-gd">@t.Team.Draws</td>
             <td style="font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:var(--gold);">@t.Points</td>
-            <td class="@(t.NRR>=0?"text-g":"text-rd")">@(t.NRR >= 0 ? "+" : "")@((t.NRR / 100.0).ToString("F2"))</td>
-            <td>
-              @for (int i = 0; i < Math.Min(t.Wins, 5); i++)
-              { <span style="display:inline-block;width:9px;height:9px;background:var(--green);border-radius:50%;margin-right:3px;" title="Win"></span> }
-              @for (int i = 0; i < Math.Min(t.Losses, 5); i++)
-              { <span style="display:inline-block;width:9px;height:9px;background:var(--red);border-radius:50%;margin-right:3px;" title="Loss"></span> }
-            </td>
+            <td class="@(t.Team.NRR>=0?"text-g":"text-rd")">@(t.Team.NRR >= 0 ? "+" : "")@((t.Team.NRR / 100.0).ToString("F2"))</td>
+            <td class="text-mt">@t.WinRate%</td>
           </tr>
           rank++;
         }

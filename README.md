@@ -6,12 +6,12 @@
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=for-the-badge&logo=csharp&logoColor=white)
 ![Entity Framework](https://img.shields.io/badge/EF_Core-8.0-512BD4?style=for-the-badge&logo=dotnet)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927?style=for-the-badge&logo=microsoft&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)
 
 **A full-stack cricket league management system built with ASP.NET Core 8, Razor Pages, EF Core, and Bootstrap 5**
 
-[Features](#-features) · [Tech Stack](#-tech-stack) · [Getting Started](#-getting-started) · [Project Structure](#-project-structure) · [Data Model](#-data-model) · [Screenshots](#-pages-overview)
+[Features](#-features) · [Tech Stack](#-tech-stack) · [Getting Started](#-getting-started) · [Project Structure](#-project-structure) · [Data Model](#-data-model) · [SQL Capabilities](#-sql-capabilities) · [Pages Overview](#-pages-overview)
 
 </div>
 
@@ -29,13 +29,13 @@ CricketPro League is a production-grade web application that manages a complete 
 
 | Feature | Details |
 |---|---|
-| 🔐 Authentication | Register, login, logout using ASP.NET Core Identity |
+| 🔐 Authentication | Register, login, logout using ASP.NET Core Identity with password hashing |
 | 🏏 Teams | View all teams with coach, captain, home ground, win/loss record |
 | 👤 Players | Browse players with position filters (Batsman/Bowler/All-Rounder/Keeper) |
 | 📅 Matches | Upcoming fixtures and completed results with scores |
-| 🏆 Standings | Live league table with points, NRR, W/L/D, and form dots |
-| 📊 Player Stats | Top batsmen & bowlers leaderboards with full stats |
-| 🔍 Smart Search | Search teams, players, matches, venues with keyword + filter |
+| 🏆 Standings | Live league table with computed points, NRR, Win Rate %, W/L/D |
+| 📊 Player Stats | Top batsmen & bowlers leaderboards with full statistics |
+| 🔍 Smart Search | Dynamic search with filtering across teams, players, matches |
 | 🌱 Seed Data | Auto-seeded with 6 teams, 10 players, 8 matches on first run |
 | 📱 Responsive | Mobile-first layout using Bootstrap 5 grid |
 
@@ -51,7 +51,7 @@ CricketPro League is a production-grade web application that manages a complete 
 | Razor Pages | Page-based MVC pattern |
 | Entity Framework Core 8 | ORM / database access |
 | ASP.NET Core Identity | Authentication & authorisation |
-| SQLite | Lightweight relational database |
+| **SQL Server** | Relational database (localdb) |
 
 ### Frontend
 | Technology | Purpose |
@@ -68,6 +68,7 @@ CricketPro League is a production-grade web application that manages a complete 
 
 ### Prerequisites
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- **SQL Server** (SQL Server Express or LocalDB)
 - Any IDE: Visual Studio 2022, VS Code, or JetBrains Rider
 
 ### Installation & Run
@@ -75,7 +76,7 @@ CricketPro League is a production-grade web application that manages a complete 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/YOUR_USERNAME/CricketProLeague.git
-cd CricketProLeague
+cd CricketLeague
 
 # 2. Restore NuGet packages
 dotnet restore
@@ -88,7 +89,7 @@ dotnet run
 # → http://localhost:5000
 ```
 
-> ✅ **No migrations required.** The SQLite database (`cricket.db`) is created automatically on first launch using `EnsureCreated()` with pre-seeded data.
+> ✅ **No migrations required.** The SQL Server database is created automatically on first launch using `EnsureCreated()` with pre-seeded data.
 
 ### First Login
 1. Click **Sign Up** to register a new account
@@ -122,11 +123,11 @@ CricketLeague/
 │   ├── 📁 Matches/
 │   │   └── Index.cshtml / .cs      # Upcoming + completed matches
 │   ├── 📁 Standings/
-│   │   └── Index.cshtml / .cs      # League table
+│   │   └── Index.cshtml / .cs      # League table with computed stats
 │   ├── 📁 PlayerStats/
 │   │   └── Index.cshtml / .cs      # Batting + bowling leaderboards
 │   ├── 📁 Search/
-│   │   └── Index.cshtml / .cs      # Keyword search + filters
+│   │   └── Index.cshtml / .cs      # Dynamic search with SQL queries
 │   ├── Index.cshtml / .cs          # Home / hero dashboard
 │   ├── _ViewImports.cshtml         # Global using directives
 │   └── _ViewStart.cshtml           # Default layout assignment
@@ -175,6 +176,74 @@ Match  ────────────────────────�
 
 ---
 
+## SQL Capabilities
+
+This project demonstrates advanced SQL Server skills through both **Entity Framework Core** and **raw T-SQL queries**:
+
+### 1. Dynamic Search with Raw SQL
+- Parameterized queries using `FromSqlRaw()`
+- Dynamic filtering across multiple entities (teams, players, matches)
+- Handles empty/missing filter values gracefully
+
+```csharp
+// Example: Raw SQL search query
+var playerSql = @"
+    SELECT p.*, t.Name AS TeamName
+    FROM Players p
+    INNER JOIN Teams t ON p.TeamId = t.Id
+    WHERE p.Name LIKE @searchTerm 
+       OR p.Position LIKE @searchTerm 
+       OR p.Nationality LIKE @searchTerm";
+```
+
+### 2. Computed Standings with JOINs
+- Multi-table JOINs to compute standings
+- Conditional aggregation using `CASE WHEN`
+- Computed columns (Points, Win Rate, Matches Played)
+
+```csharp
+// Example: SQL with computed columns
+var standingsSql = @"
+    SELECT 
+        t.Id, t.Name, t.Wins, t.Losses, t.Draws, t.NRR,
+        (t.Wins + t.Losses + t.Draws) AS MatchesPlayed,
+        (t.Wins * 2 + t.Draws) AS Points,
+        CASE 
+            WHEN (t.Wins + t.Losses + t.Draws) > 0 
+            THEN ROUND(CAST(t.Wins AS FLOAT) / (t.Wins + t.Losses + t.Draws) * 100, 1)
+            ELSE 0 
+        END AS WinRate
+    FROM Teams t
+    ORDER BY Points DESC, t.Wins DESC, t.NRR DESC";
+```
+
+### 3. Player Statistics with Aggregations
+- Aggregate functions: `SUM`, `AVG`, `MAX`, `COUNT`
+- `GROUP BY` for position-based statistics
+- Window functions (`ROW_NUMBER()`) for ranking
+
+```csharp
+// Example: Aggregation with GROUP BY
+var statsSql = @"
+    SELECT 
+        p.Position,
+        COUNT(p.Id) AS PlayerCount,
+        SUM(p.Runs) AS TotalRuns,
+        SUM(p.Wickets) AS TotalWickets,
+        AVG(p.BattingAverage) AS AvgBattingAvg,
+        MAX(p.HighestScore) AS HighestScore
+    FROM Players p
+    GROUP BY p.Position
+    ORDER BY TotalRuns DESC";
+```
+
+### 4. Relational Data Design
+- Foreign key relationships (Team → Players, Match → Teams)
+- One-to-many and many-to-one relationships
+- Proper constraint enforcement at database level
+
+---
+
 ## 🔒 Authentication & Authorisation
 
 All data pages require login. Unauthenticated users are redirected to `/Account/Login`.
@@ -207,13 +276,13 @@ Filterable player grid by position (Batsman / Bowler / All-Rounder / Wicket-Keep
 Split view: upcoming fixtures (date, venue, teams) and completed results (scores, result string, winner highlighted).
 
 ### 🏆 Standings
-Full league table with rank medals, form dots (green/red circles), NRR, and all stats. Sorted by Points → Wins → NRR.
+Full league table with rank medals, computed Win Rate %, NRR, and all stats. Sorted by Points → Wins → NRR.
 
 ### 📊 Player Stats
-Top 10 batsmen and all active bowlers in detailed leaderboard tables, plus summary highlight cards.
+Top 10 batsmen and all active bowlers in detailed leaderboard tables, plus summary highlight cards showing aggregate statistics.
 
 ### 🔍 Search
-Keyword search across all entities with filter buttons (All / Teams / Players / Matches). Real-time result count.
+Keyword search across all entities with filter buttons (All / Teams / Players / Matches). Uses raw SQL for dynamic query building.
 
 ---
 
