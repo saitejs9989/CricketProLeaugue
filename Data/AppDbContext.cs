@@ -16,6 +16,19 @@ namespace CricketLeague.Data
         {
             base.OnModelCreating(b);
 
+            // SQL Server: two FKs from Matches → Teams cannot both use ON DELETE CASCADE.
+            b.Entity<Match>()
+                .HasOne(m => m.Team1)
+                .WithMany()
+                .HasForeignKey(m => m.Team1Id)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            b.Entity<Match>()
+                .HasOne(m => m.Team2)
+                .WithMany()
+                .HasForeignKey(m => m.Team2Id)
+                .OnDelete(DeleteBehavior.NoAction);
+
             // ── Teams ──────────────────────────────────────────────────────────
             b.Entity<Team>().HasData(
                 new Team { Id=1, Name="Mumbai Strikers",   Coach="Ravi Shastri",    Captain="Rohit Sharma",    Country="India",        HomeGround="Wankhede Stadium",          LogoEmoji="🔵", Wins=9, Losses=2, Draws=0, NRR= 62 },
