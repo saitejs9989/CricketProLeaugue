@@ -1,0 +1,57 @@
+@page
+@model CricketLeague.Pages.Matches.IndexModel
+@{ ViewData["Title"] = "Matches"; }
+
+<div class="container">
+  <div class="pg-head">
+    <div class="lbl">Schedule &amp; Results</div>
+    <h1>MATCHES</h1>
+  </div>
+
+  @if (Model.Upcoming.Any())
+  {
+    <h4 class="text-gd mb-3" style="letter-spacing:2px;">⏰ UPCOMING FIXTURES</h4>
+    @foreach (var m in Model.Upcoming)
+    {
+      <div class="mc">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="s-upcoming">● Upcoming · @m.MatchType</span>
+          <span style="font-size:.8rem;color:var(--muted);">@m.MatchDate.ToString("ddd, MMM dd yyyy · HH:mm")</span>
+        </div>
+        <div class="mc-teams">
+          <div><div class="mc-team">@m.Team1?.Name</div><div style="font-size:.75rem;color:var(--muted);">@m.Team1?.Country</div></div>
+          <div class="vs-pill">VS</div>
+          <div><div class="mc-team">@m.Team2?.Name</div><div style="font-size:.75rem;color:var(--muted);">@m.Team2?.Country</div></div>
+        </div>
+        <div class="text-center mt-3" style="font-size:.78rem;color:var(--muted);">📍 @m.Venue</div>
+      </div>
+    }
+  }
+
+  @if (Model.Completed.Any())
+  {
+    <h4 class="text-g mt-5 mb-3" style="letter-spacing:2px;">✅ COMPLETED MATCHES</h4>
+    @foreach (var m in Model.Completed)
+    {
+      <div class="mc">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="s-completed">● Completed · @m.MatchType</span>
+          <span style="font-size:.8rem;color:var(--muted);">@m.MatchDate.ToString("ddd, MMM dd yyyy")</span>
+        </div>
+        <div class="mc-teams">
+          <div>
+            <div class="mc-team" style="@(m.WinnerTeamId==m.Team1Id?"color:var(--green-lt)":"")">@m.Team1?.Name</div>
+            <div class="mc-score">@m.Team1Score</div>
+          </div>
+          <div class="vs-pill">VS</div>
+          <div>
+            <div class="mc-team" style="@(m.WinnerTeamId==m.Team2Id?"color:var(--green-lt)":"")">@m.Team2?.Name</div>
+            <div class="mc-score">@m.Team2Score</div>
+          </div>
+        </div>
+        @if (m.Result != null){ <div class="text-center mt-2" style="font-size:.82rem;color:var(--green);font-weight:500;">🏆 @m.Result</div> }
+        <div class="text-center mt-1" style="font-size:.75rem;color:var(--muted);">📍 @m.Venue</div>
+      </div>
+    }
+  }
+</div>

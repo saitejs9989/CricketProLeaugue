@@ -1,0 +1,68 @@
+@page
+@model CricketLeague.Pages.Standings.IndexModel
+@{ ViewData["Title"] = "Standings"; }
+
+<div class="container">
+  <div class="pg-head">
+    <div class="lbl">2024 T20 Season</div>
+    <h1>LEAGUE STANDINGS</h1>
+    <p class="text-mt" style="font-size:.88rem;margin-top:.4rem;">Points: Win = 2 pts · Draw = 1 pt · Loss = 0 pts</p>
+  </div>
+
+  <div style="overflow-x:auto;">
+    <table class="st">
+      <thead>
+        <tr>
+          <th style="width:50px;">#</th>
+          <th>Team</th>
+          <th title="Matches Played">MP</th>
+          <th title="Wins">W</th>
+          <th title="Losses">L</th>
+          <th title="Draws">D</th>
+          <th title="Points">PTS</th>
+          <th title="Net Run Rate">NRR</th>
+          <th>Form</th>
+        </tr>
+      </thead>
+      <tbody>
+        @{ int rank = 1; }
+        @foreach (var t in Model.Teams)
+        {
+          <tr>
+            <td>
+              <span class="rk @(rank==1?"rk-1":rank==2?"rk-2":rank==3?"rk-3":"rk-x")">@rank</span>
+            </td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <span style="font-size:1.2rem;">@t.LogoEmoji</span>
+                <div>
+                  <div style="font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:1rem;">@t.Name</div>
+                  <div style="font-size:.7rem;color:var(--muted);">@t.Captain</div>
+                </div>
+              </div>
+            </td>
+            <td class="text-mt">@t.MatchesPlayed</td>
+            <td class="text-g fw-bold">@t.Wins</td>
+            <td class="text-rd fw-bold">@t.Losses</td>
+            <td class="text-gd">@t.Draws</td>
+            <td style="font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:var(--gold);">@t.Points</td>
+            <td class="@(t.NRR>=0?"text-g":"text-rd")">@(t.NRR >= 0 ? "+" : "")@((t.NRR / 100.0).ToString("F2"))</td>
+            <td>
+              @for (int i = 0; i < Math.Min(t.Wins, 5); i++)
+              { <span style="display:inline-block;width:9px;height:9px;background:var(--green);border-radius:50%;margin-right:3px;" title="Win"></span> }
+              @for (int i = 0; i < Math.Min(t.Losses, 5); i++)
+              { <span style="display:inline-block;width:9px;height:9px;background:var(--red);border-radius:50%;margin-right:3px;" title="Loss"></span> }
+            </td>
+          </tr>
+          rank++;
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4 d-flex flex-wrap gap-4" style="font-size:.78rem;color:var(--muted);">
+    <span><span style="display:inline-block;width:9px;height:9px;background:var(--green);border-radius:50%;margin-right:5px;"></span>Win</span>
+    <span><span style="display:inline-block;width:9px;height:9px;background:var(--red);border-radius:50%;margin-right:5px;"></span>Loss</span>
+    <span>MP = Matches Played · W = Wins · L = Losses · D = Draws · PTS = Points · NRR = Net Run Rate</span>
+  </div>
+</div>

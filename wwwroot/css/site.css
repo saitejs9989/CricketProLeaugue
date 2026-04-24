@@ -1,0 +1,213 @@
+/* ═══════════════════════════════════════════════
+   CRICKETPRO LEAGUE — Design System
+   Theme: Dark cricket field, gold highlights
+   Fonts: Bebas Neue (headings) + Inter (body)
+═══════════════════════════════════════════════ */
+
+:root {
+  --bg:          #07140a;
+  --bg2:         #0d2010;
+  --surface:     rgba(12,32,14,0.88);
+  --border:      rgba(34,197,94,0.18);
+  --green:       #22c55e;
+  --green-lt:    #4ade80;
+  --gold:        #f59e0b;
+  --gold-lt:     #fcd34d;
+  --red:         #ef4444;
+  --white:       #f0fdf4;
+  --muted:       #6b7280;
+  --radius:      12px;
+  --shadow:      0 8px 32px rgba(0,0,0,.5);
+}
+
+/* ── BASE ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 20% 30%, rgba(26,92,26,.25) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 80% 70%, rgba(34,197,94,.06) 0%, transparent 70%);
+  min-height: 100vh;
+}
+
+a { text-decoration: none; color: inherit; }
+h1,h2,h3,h4,h5 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 1.5px; }
+
+/* ── NAVBAR ───────────────────────────────────── */
+.main-nav {
+  background: rgba(7,20,10,.96) !important;
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-ball { font-size: 1.4rem; }
+.brand-word { font-family:'Bebas Neue',sans-serif; font-size:1.65rem; letter-spacing:3px; color:var(--white); }
+.brand-pro  { color: var(--green); }
+.navbar-nav .nav-link { color:#9ca3af !important; font-size:.875rem; font-weight:500; transition:color .2s; padding:.45rem .8rem !important; }
+.navbar-nav .nav-link:hover { color:var(--green-lt) !important; }
+.nav-user   { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:.3rem .9rem !important; color:var(--white) !important; }
+.nav-outline{ border:1px solid var(--border); border-radius:8px; padding:.35rem .9rem !important; color:var(--white) !important; }
+.nav-filled { background:var(--green); border-radius:8px; padding:.35rem 1rem !important; color:#052e10 !important; font-weight:700 !important; }
+.nav-filled:hover { background:var(--green-lt) !important; }
+.custom-dd  { background:var(--bg2); border:1px solid var(--border); border-radius:10px; }
+.custom-dd .dropdown-item { color:#d1d5db; font-size:.875rem; }
+.custom-dd .dropdown-item:hover { background:var(--border); color:var(--green-lt); }
+
+/* ── HERO ─────────────────────────────────────── */
+.hero {
+  min-height: 82vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 5rem 0;
+}
+.hero-tag {
+  font-size:.72rem; font-weight:700; letter-spacing:4px; text-transform:uppercase;
+  color:var(--green); display:flex; align-items:center; gap:10px; margin-bottom:1.1rem;
+}
+.hero-tag::before { content:''; width:28px; height:2px; background:var(--green); display:inline-block; }
+.hero h1 { font-size: clamp(3.5rem,8vw,7rem); line-height:.92; margin-bottom:1.4rem; }
+.hero h1 .hl { color:var(--green); display:block; }
+.hero p { color:#9ca3af; max-width:480px; line-height:1.75; font-size:1.05rem; margin-bottom:2rem; }
+.hero-nums { display:flex; gap:2.5rem; padding-top:2rem; border-top:1px solid var(--border); margin-top:2rem; }
+.hnum-n { font-family:'Bebas Neue',sans-serif; font-size:2.4rem; color:var(--gold); line-height:1; }
+.hnum-l { font-size:.7rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); }
+
+/* animated cricket ball */
+.ball-wrap { display:flex; justify-content:center; align-items:center; }
+.ball {
+  width:260px; height:260px; border-radius:50%;
+  background: radial-gradient(circle at 33% 33%, #dc2626, #7f1d1d);
+  box-shadow: 0 0 80px rgba(220,38,38,.45), 0 24px 60px rgba(0,0,0,.6);
+  animation: bob 4s ease-in-out infinite;
+  position: relative;
+}
+.ball::before {
+  content:''; position:absolute; top:50%; left:10%; right:10%; height:3px;
+  background:rgba(255,255,255,.35); border-radius:50%;
+  transform:translateY(-50%);
+  box-shadow: 0 5px 0 rgba(255,255,255,.12), 0 -5px 0 rgba(255,255,255,.12);
+}
+.ball::after {
+  content:''; position:absolute; top:10%; bottom:10%; left:50%; width:3px;
+  background:rgba(255,255,255,.35); border-radius:50%;
+  transform:translateX(-50%);
+}
+@keyframes bob { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-18px) rotate(8deg)} }
+
+/* ── SECTION LABEL ────────────────────────────── */
+.lbl { font-size:.68rem; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--green); margin-bottom:.3rem; }
+.sec-title { font-size:clamp(2rem,4vw,3.2rem); line-height:1.05; }
+
+/* ── PAGE HEADER ──────────────────────────────── */
+.pg-head { padding:2.5rem 0 1.8rem; border-bottom:1px solid var(--border); margin-bottom:2.5rem; }
+.pg-head h1 { font-size:clamp(2.5rem,5vw,4rem); margin:0; }
+
+/* ── CARD ─────────────────────────────────────── */
+.card-c {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:1.5rem;
+  backdrop-filter:blur(12px); transition:transform .22s, border-color .22s, box-shadow .22s;
+}
+.card-c:hover { transform:translateY(-5px); border-color:rgba(34,197,94,.45); box-shadow:var(--shadow); }
+.card-c h5 { margin-bottom:.3rem; font-size:1.25rem; }
+
+/* ── TEAM CARD ────────────────────────────────── */
+.tc { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .22s; }
+.tc:hover { transform:translateY(-5px); border-color:rgba(34,197,94,.45); box-shadow:var(--shadow); }
+.tc-head { padding:1.2rem 1.4rem; background:linear-gradient(135deg,rgba(26,92,26,.55),transparent); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:1rem; }
+.tc-avatar { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,var(--green),#166534); display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
+.tc-body { padding:1.2rem 1.4rem; }
+.tc-row { display:flex; justify-content:space-between; padding:.35rem 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:.875rem; }
+.tc-row:last-child { border:none; }
+.tc-lbl { color:var(--muted); }
+.tc-val { font-weight:600; }
+
+/* ── PLAYER CARD ──────────────────────────────── */
+.pc { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.4rem; transition:all .22s; }
+.pc:hover { transform:translateY(-4px); border-color:rgba(34,197,94,.45); box-shadow:var(--shadow); }
+.pc-avatar { width:54px; height:54px; border-radius:50%; background:linear-gradient(135deg,var(--gold),#b45309); display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+.pos-badge { font-size:.68rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:.2rem .65rem; border-radius:20px; background:rgba(34,197,94,.12); color:var(--green); border:1px solid rgba(34,197,94,.28); display:inline-block; }
+
+/* ── STAT PILL ────────────────────────────────── */
+.sp { display:inline-flex; flex-direction:column; align-items:center; background:rgba(34,197,94,.07); border:1px solid var(--border); border-radius:10px; padding:.7rem .9rem; min-width:76px; }
+.sp-n { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--gold); line-height:1; }
+.sp-l { font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-top:.15rem; }
+
+/* ── MATCH CARD ───────────────────────────────── */
+.mc { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.4rem; margin-bottom:.85rem; }
+.mc-teams { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; text-align:center; gap:.8rem; }
+.mc-team  { font-family:'Bebas Neue',sans-serif; font-size:1.15rem; letter-spacing:1px; }
+.mc-score { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--gold); }
+.vs-pill  { background:rgba(34,197,94,.1); border:1px solid var(--border); border-radius:8px; padding:.4rem .9rem; font-family:'Bebas Neue',sans-serif; color:var(--green); font-size:1rem; }
+.s-live      { color:#ef4444; font-weight:700; animation:blink 1.5s infinite; font-size:.72rem; text-transform:uppercase; letter-spacing:2px; }
+.s-upcoming  { color:var(--gold); font-size:.72rem; text-transform:uppercase; letter-spacing:2px; font-weight:700; }
+.s-completed { color:var(--green); font-size:.72rem; text-transform:uppercase; letter-spacing:2px; font-weight:700; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* ── STANDINGS TABLE ──────────────────────────── */
+.st { width:100%; border-collapse:separate; border-spacing:0 5px; }
+.st th { font-size:.68rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--muted); padding:.7rem 1rem; border-bottom:1px solid var(--border); }
+.st td { padding:.95rem 1rem; background:var(--surface); border:1px solid var(--border); font-size:.9rem; vertical-align:middle; }
+.st td:first-child { border-radius:var(--radius) 0 0 var(--radius); border-right:none; }
+.st td:last-child  { border-radius:0 var(--radius) var(--radius) 0; border-left:none; }
+.st td:not(:first-child):not(:last-child) { border-left:none; border-right:none; }
+.st tr:hover td { background:rgba(34,197,94,.06); border-color:rgba(34,197,94,.35); }
+.rk { width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:.78rem; }
+.rk-1 { background:var(--gold);  color:#000; }
+.rk-2 { background:#94a3b8; color:#000; }
+.rk-3 { background:#cd7f32; color:#000; }
+.rk-x { background:rgba(255,255,255,.07); color:var(--muted); }
+
+/* ── SEARCH ───────────────────────────────────── */
+.search-wrap { position:relative; max-width:600px; margin:0 auto 2rem; }
+.search-in {
+  width:100%; background:var(--surface); border:1px solid var(--border);
+  border-radius:50px; color:var(--white); padding:.95rem 1.4rem .95rem 3.4rem;
+  font-size:1rem; outline:none; transition:border-color .2s;
+}
+.search-in:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(34,197,94,.12); }
+.search-ic { position:absolute; left:1.2rem; top:50%; transform:translateY(-50%); color:var(--muted); font-size:1.05rem; }
+
+/* ── FILTER PILLS ─────────────────────────────── */
+.filter-pill {
+  background:var(--surface); border:1px solid var(--border); border-radius:20px;
+  padding:.35rem 1rem; font-size:.8rem; font-weight:600; color:var(--muted);
+  cursor:pointer; transition:all .18s;
+}
+.filter-pill:hover, .filter-pill.active { background:var(--green); color:#052e10; border-color:var(--green); }
+
+/* ── AUTH ─────────────────────────────────────── */
+.auth-wrap { min-height:80vh; display:flex; align-items:center; justify-content:center; padding:2rem 1rem; }
+.auth-box {
+  background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  padding:2.5rem; width:100%; max-width:440px; backdrop-filter:blur(20px);
+}
+.auth-box h2 { font-size:2.2rem; margin-bottom:.15rem; }
+.form-label { font-size:.75rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; }
+.form-control { background:rgba(255,255,255,.04) !important; border:1px solid var(--border) !important; border-radius:8px !important; color:var(--white) !important; padding:.75rem 1rem !important; font-size:.95rem !important; }
+.form-control:focus { border-color:var(--green) !important; box-shadow:0 0 0 3px rgba(34,197,94,.12) !important; }
+.form-control::placeholder { color:#4b5563 !important; }
+.btn-g { background:var(--green); color:#052e10; border:none; border-radius:8px; padding:.8rem; font-weight:700; font-size:.95rem; width:100%; cursor:pointer; transition:all .2s; letter-spacing:.5px; }
+.btn-g:hover { background:var(--green-lt); transform:translateY(-1px); box-shadow:0 8px 24px rgba(34,197,94,.3); }
+
+/* ── ALERTS ───────────────────────────────────── */
+.a-ok  { background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.3); border-radius:8px; color:var(--green-lt); padding:.75rem 1rem; font-size:.9rem; margin-bottom:1rem; }
+.a-err { background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3); border-radius:8px; color:#fca5a5; padding:.75rem 1rem; font-size:.9rem; margin-bottom:1rem; }
+
+/* ── FOOTER ───────────────────────────────────── */
+.site-footer { background:rgba(7,20,10,.97); border-top:1px solid var(--border); }
+.site-footer a { color:var(--muted); font-size:.875rem; transition:color .2s; }
+.site-footer a:hover { color:var(--green); }
+.footer-sub  { font-size:.72rem; color:#374151; margin:.15rem 0 0; }
+.footer-tech { font-size:.72rem; color:#374151; }
+
+/* ── UTILITIES ────────────────────────────────── */
+.text-g  { color:var(--green)  !important; }
+.text-gd { color:var(--gold)   !important; }
+.text-mt { color:var(--muted)  !important; }
+.text-rd { color:var(--red)    !important; }
+.divhr   { border-color:var(--border) !important; }

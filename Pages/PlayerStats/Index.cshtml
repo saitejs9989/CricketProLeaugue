@@ -1,0 +1,107 @@
+@page
+@model CricketLeague.Pages.PlayerStats.IndexModel
+@{ ViewData["Title"] = "Player Stats"; }
+
+<div class="container">
+  <div class="pg-head">
+    <div class="lbl">Performance Data · Season 2024</div>
+    <h1>PLAYER STATISTICS</h1>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-5">
+    <div class="col-sm-6 col-lg-3">
+      <div class="card-c text-center">
+        <div class="sp-n text-gd" style="font-size:2.5rem;">@Model.TopBatsmen.FirstOrDefault()?.Runs</div>
+        <div class="sp-l mt-1">Most Runs</div>
+        <div style="font-size:.85rem;margin-top:.3rem;">@Model.TopBatsmen.FirstOrDefault()?.Name</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="card-c text-center">
+        <div class="sp-n text-g" style="font-size:2.5rem;">@Model.TopBowlers.FirstOrDefault()?.Wickets</div>
+        <div class="sp-l mt-1">Most Wickets</div>
+        <div style="font-size:.85rem;margin-top:.3rem;">@Model.TopBowlers.FirstOrDefault()?.Name</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="card-c text-center">
+        <div class="sp-n text-gd" style="font-size:2.5rem;">@Model.TopBatsmen.FirstOrDefault()?.Centuries</div>
+        <div class="sp-l mt-1">Most Centuries</div>
+        <div style="font-size:.85rem;margin-top:.3rem;">@Model.TopBatsmen.FirstOrDefault()?.Name</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="card-c text-center">
+        <div class="sp-n text-g" style="font-size:2.5rem;">@Model.TopBowlers.FirstOrDefault()?.BestBowling</div>
+        <div class="sp-l mt-1">Best Bowling</div>
+        <div style="font-size:.85rem;margin-top:.3rem;">@Model.TopBowlers.FirstOrDefault()?.Name</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Batsmen -->
+  <h4 class="text-gd mb-3" style="letter-spacing:2px;">🏏 TOP BATSMEN</h4>
+  <div style="overflow-x:auto;margin-bottom:3rem;">
+    <table class="st">
+      <thead>
+        <tr>
+          <th>#</th><th>Player</th><th>Team</th><th>M</th>
+          <th>Runs</th><th>Avg</th><th>SR</th><th>100s</th><th>50s</th><th>HS</th><th>4s</th><th>6s</th>
+        </tr>
+      </thead>
+      <tbody>
+        @{ int r=1; }
+        @foreach (var p in Model.TopBatsmen)
+        {
+          <tr>
+            <td><span class="rk @(r==1?"rk-1":r==2?"rk-2":r==3?"rk-3":"rk-x")">@r</span></td>
+            <td style="font-weight:600;">@p.Name</td>
+            <td style="font-size:.8rem;color:var(--muted);">@p.Team?.Name</td>
+            <td class="text-mt">@p.Matches</td>
+            <td style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--gold);">@p.Runs</td>
+            <td class="text-g">@p.BattingAverage.ToString("F1")</td>
+            <td class="text-mt">@p.StrikeRate.ToString("F1")</td>
+            <td>@p.Centuries</td>
+            <td>@p.HalfCenturies</td>
+            <td class="text-mt">@p.HighestScore</td>
+            <td class="text-mt">@p.Fours</td>
+            <td class="text-mt">@p.Sixes</td>
+          </tr>
+          r++;
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Top Bowlers -->
+  <h4 class="text-g mb-3" style="letter-spacing:2px;">🎯 TOP BOWLERS</h4>
+  <div style="overflow-x:auto;">
+    <table class="st">
+      <thead>
+        <tr>
+          <th>#</th><th>Player</th><th>Team</th><th>M</th>
+          <th>Wkts</th><th>Avg</th><th>Econ</th><th>Best</th><th>5W</th>
+        </tr>
+      </thead>
+      <tbody>
+        @{ int rb=1; }
+        @foreach (var p in Model.TopBowlers)
+        {
+          <tr>
+            <td><span class="rk @(rb==1?"rk-1":rb==2?"rk-2":rb==3?"rk-3":"rk-x")">@rb</span></td>
+            <td style="font-weight:600;">@p.Name</td>
+            <td style="font-size:.8rem;color:var(--muted);">@p.Team?.Name</td>
+            <td class="text-mt">@p.Matches</td>
+            <td style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--green);">@p.Wickets</td>
+            <td class="text-gd">@p.BowlingAverage.ToString("F1")</td>
+            <td>@p.Economy.ToString("F1")</td>
+            <td class="text-mt">@p.BestBowling</td>
+            <td>@p.FiveWickets</td>
+          </tr>
+          rb++;
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

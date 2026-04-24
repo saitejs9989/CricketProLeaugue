@@ -1,0 +1,120 @@
+@page
+@model CricketLeague.Pages.Search.IndexModel
+@{ ViewData["Title"] = "Search"; }
+
+<div class="container">
+  <div class="pg-head">
+    <div class="lbl">Find Anything</div>
+    <h1>SEARCH THE LEAGUE</h1>
+  </div>
+
+  <form method="get">
+    <div class="search-wrap">
+      <i class="bi bi-search search-ic"></i>
+      <input type="text" name="Query" value="@Model.Query" id="liveSearch" class="search-in"
+             placeholder="Search teams, players, matches, venues…" autofocus/>
+    </div>
+    <input type="hidden" name="Filter" value="@Model.Filter" />
+    <div class="d-flex justify-content-center gap-2 flex-wrap mb-4">
+      <button type="submit" class="btn-g" style="width:auto;padding:.55rem 2rem;font-size:.9rem;">Search</button>
+    </div>
+    <div class="d-flex justify-content-center gap-2 flex-wrap mb-4">
+      @foreach (var f in new[]{"all","teams","players","matches"})
+      {
+        <button type="submit" name="Filter" value="@f"
+          class="filter-pill @(Model.Filter==f?"active":"")">
+          @System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(f)
+        </button>
+      }
+    </div>
+  </form>
+
+  @if (!string.IsNullOrEmpty(Model.Query))
+  {
+    var total = Model.Teams.Count + Model.Players.Count + Model.Matches.Count;
+    <p class="text-mt mb-4" style="font-size:.88rem;">
+      <strong style="color:var(--white);">@total result@(total==1?"":"s")</strong> for
+      "<span style="color:var(--green);">@Model.Query</span>"
+    </p>
+
+    @if (Model.Teams.Any())
+    {
+      <h5 class="text-gd mb-3" style="letter-spacing:2px;">🏏 TEAMS (@Model.Teams.Count)</h5>
+      <div class="row g-3 mb-4">
+        @foreach (var t in Model.Teams)
+        {
+          <div class="col-md-4 sr">
+            <div class="card-c">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <span style="font-size:1.5rem;">@t.LogoEmoji</span>
+                <div><h5 style="margin:0;">@t.Name</h5><small class="text-mt">@t.Country · @t.HomeGround</small></div>
+              </div>
+              <div style="font-size:.85rem;" class="text-mt">Captain: <span style="color:var(--white);">@t.Captain</span></div>
+              <div style="font-size:.85rem;" class="text-mt">Points: <span class="text-gd fw-bold">@t.Points</span></div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (Model.Players.Any())
+    {
+      <h5 class="text-g mb-3" style="letter-spacing:2px;">👤 PLAYERS (@Model.Players.Count)</h5>
+      <div class="row g-3 mb-4">
+        @foreach (var p in Model.Players)
+        {
+          <div class="col-md-4 sr">
+            <div class="card-c">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <span style="font-size:1.5rem;">👤</span>
+                <div><h5 style="margin:0;">@p.Name</h5><small class="text-mt">@p.Team?.Name · @p.Nationality</small></div>
+              </div>
+              <span class="pos-badge mb-2">@p.Position</span>
+              <div style="font-size:.85rem;" class="text-mt">
+                Runs: <span class="text-gd fw-bold">@p.Runs</span> &nbsp;
+                Wkts: <span class="text-g fw-bold">@p.Wickets</span> &nbsp;
+                Avg: <span style="color:var(--white);">@p.BattingAverage.ToString("F1")</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (Model.Matches.Any())
+    {
+      <h5 class="mb-3" style="letter-spacing:2px;">📅 MATCHES (@Model.Matches.Count)</h5>
+      @foreach (var m in Model.Matches)
+      {
+        <div class="mc sr">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="@(m.Status=="Upcoming"?"s-upcoming":m.Status=="Live"?"s-live":"s-completed")">● @m.Status</span>
+            <span style="font-size:.78rem;color:var(--muted);">@m.MatchDate.ToString("MMM dd, yyyy")</span>
+          </div>
+          <div class="mc-teams">
+            <div><div class="mc-team">@m.Team1?.Name</div><div class="mc-score">@m.Team1Score</div></div>
+            <div class="vs-pill">VS</div>
+            <div><div class="mc-team">@m.Team2?.Name</div><div class="mc-score">@m.Team2Score</div></div>
+          </div>
+          <div class="text-center mt-2" style="font-size:.75rem;color:var(--muted);">📍 @m.Venue</div>
+        </div>
+      }
+    }
+
+    @if (total == 0)
+    {
+      <div class="text-center py-5">
+        <div style="font-size:3rem;margin-bottom:1rem;">🔍</div>
+        <p class="text-mt">No results found for "<strong style="color:var(--white);">@Model.Query</strong>"</p>
+        <p class="text-mt" style="font-size:.875rem;">Try searching by team name, player name, or venue.</p>
+      </div>
+    }
+  }
+  else
+  {
+    <div class="text-center py-5">
+      <div style="font-size:3.5rem;margin-bottom:1rem;">🏏</div>
+      <p class="text-mt">Enter a keyword above to search teams, players, matches, or venues.</p>
+    </div>
+  }
+</div>

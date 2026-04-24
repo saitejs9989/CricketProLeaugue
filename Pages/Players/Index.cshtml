@@ -1,0 +1,48 @@
+@page
+@model CricketLeague.Pages.Players.IndexModel
+@{ ViewData["Title"] = "Players"; }
+
+<div class="container">
+  <div class="pg-head d-flex justify-content-between align-items-end flex-wrap gap-3">
+    <div>
+      <div class="lbl">Squad Roster</div>
+      <h1>ALL PLAYERS</h1>
+    </div>
+    <!-- Filter by position -->
+    <div class="d-flex gap-2 flex-wrap">
+      @foreach (var pos in new[]{"All","Batsman","Bowler","All-Rounder","Wicket-Keeper"})
+      {
+        <a href="?pos=@pos" class="filter-pill @(Model.PositionFilter==pos?"active":"")">@pos</a>
+      }
+    </div>
+  </div>
+
+  <div class="row g-4">
+    @foreach (var p in Model.Players)
+    {
+      <div class="col-md-6 col-lg-4 sr">
+        <div class="pc">
+          <div class="d-flex align-items-start gap-3 mb-3">
+            <div class="pc-avatar">👤</div>
+            <div>
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:1px;">@p.Name</div>
+              <div style="font-size:.78rem;color:var(--muted);">@p.Team?.Name · Age @p.Age · @p.Nationality</div>
+              <span class="pos-badge mt-1">@p.Position</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <div class="sp"><span class="sp-n">@p.Runs</span><span class="sp-l">Runs</span></div>
+            <div class="sp"><span class="sp-n">@p.BattingAverage.ToString("F1")</span><span class="sp-l">Avg</span></div>
+            <div class="sp"><span class="sp-n">@p.Wickets</span><span class="sp-l">Wkts</span></div>
+            <div class="sp"><span class="sp-n">@p.Matches</span><span class="sp-l">M</span></div>
+          </div>
+          <div class="mt-3 pt-3" style="border-top:1px solid var(--border);font-size:.8rem;color:var(--muted);">
+            <span class="me-3">100s: <span style="color:var(--gold);font-weight:600;">@p.Centuries</span></span>
+            <span class="me-3">50s: <span style="color:var(--gold);font-weight:600;">@p.HalfCenturies</span></span>
+            <span>HS: <span style="color:var(--white);font-weight:600;">@p.HighestScore</span></span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

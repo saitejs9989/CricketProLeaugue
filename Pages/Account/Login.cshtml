@@ -1,0 +1,27 @@
+@page
+@model CricketLeague.Pages.Account.LoginModel
+@{ ViewData["Title"] = "Login"; Layout = "_Layout"; }
+
+<div class="auth-wrap">
+  <div class="auth-box">
+    <div class="text-center mb-4">
+      <div style="font-size:2.8rem;">🏏</div>
+      <h2>WELCOME BACK</h2>
+      <p class="text-mt" style="font-size:.9rem;margin:0;">Sign in to access the league dashboard</p>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.Error)){ <div class="a-err">@Model.Error</div> }
+    <form method="post">
+      <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <input asp-for="Email" type="email" class="form-control" placeholder="you@example.com"/>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Password</label>
+        <input asp-for="Password" type="password" class="form-control" placeholder="••••••••"/>
+      </div>
+      <button type="submit" class="btn-g">Sign In →</button>
+    </form>
+    <hr class="divhr my-4"/>
+    <p class="text-center text-mt" style="font-size:.875rem;">No account? <a href="/Account/Register" class="text-g">Create one free</a></p>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+@page
+@model CricketLeague.Pages.Teams.IndexModel
+@{ ViewData["Title"] = "Teams"; }
+
+<div class="container">
+  <div class="pg-head">
+    <div class="lbl">League Participants</div>
+    <h1>ALL TEAMS</h1>
+    <p class="text-mt" style="font-size:.9rem;margin-top:.4rem;">@Model.Teams.Count teams competing in Season 2024</p>
+  </div>
+  <div class="row g-4">
+    @foreach (var t in Model.Teams)
+    {
+      <div class="col-md-6 col-lg-4">
+        <div class="tc">
+          <div class="tc-head">
+            <div class="tc-avatar">@t.LogoEmoji</div>
+            <div>
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1px;">@t.Name</div>
+              <div style="font-size:.75rem;color:var(--muted);">@t.Country · @t.HomeGround</div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-row"><span class="tc-lbl">Captain</span><span class="tc-val">@t.Captain</span></div>
+            <div class="tc-row"><span class="tc-lbl">Coach</span><span class="tc-val">@t.Coach</span></div>
+            <div class="tc-row"><span class="tc-lbl">Home Ground</span><span class="tc-val" style="font-size:.82rem;">@t.HomeGround</span></div>
+            <div class="tc-row"><span class="tc-lbl">Squad Size</span><span class="tc-val">@t.Players.Count players</span></div>
+            <div class="tc-row">
+              <span class="tc-lbl">Record</span>
+              <span class="tc-val">
+                <span class="text-g">W@t.Wins</span>&nbsp;
+                <span class="text-rd">L@t.Losses</span>&nbsp;
+                <span class="text-gd">D@t.Draws</span>
+              </span>
+            </div>
+            <div class="tc-row">
+              <span class="tc-lbl">Points</span>
+              <span class="tc-val text-gd" style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;">@t.Points</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
